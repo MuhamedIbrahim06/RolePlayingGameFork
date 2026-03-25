@@ -11,6 +11,7 @@ class Program
     // index: 0 Name, 1 Class, 2 HP, 3 MaxHP, 4 ATK, 5 DEF, 6 GOLD, 7 XP, 8 LEVEL, 9 POTIONS, 10 INVENTORY (semicolon-sep)
     static string[] Player = new string[11];
 
+    private static Player myPlayer; // Ny spelare
     // Rum: [type, label]
     // types: battle, treasure, shop, rest, boss
     static List<string[]> Rooms = new List<string[]>();
@@ -81,21 +82,25 @@ class Program
         
         switch (k)
         {
-            case "1": // Warrior: tankig
+            case "1": 
                 cls = "Warrior";
                 maxhp = 40; hp = 40; atk = 7; def = 5; potions = 2; gold = 15;
+                myPlayer = new Player(new Warrior(), name, hp, maxhp, atk, def, gold, potions); //Objektet skapas
                 break;
-            case "2": // Mage: hög damage, låg def
+            case "2": 
                 cls = "Mage";
                 maxhp = 28; hp = 28; atk = 10; def = 2; potions = 2; gold = 15;
+                myPlayer = new Player(new Mage(), name, hp, maxhp, atk, def, gold, potions); // Objekt skapas
                 break;
-            case "3": // Rogue: krit-chans
+            case "3": 
                 cls = "Rogue";
                 maxhp = 32; hp = 32; atk = 8; def = 3; potions = 3; gold = 20;
+                myPlayer = new Player(new Rogue(), name, hp, maxhp, atk, def, gold, potions); // Objekt skapas
                 break;
             default:
                 cls = "Warrior";
                 maxhp = 40; hp = 40; atk = 7; def = 5; potions = 2; gold = 15;
+                myPlayer = new Player(new Warrior(), name, hp, maxhp, atk, def, gold, potions); //Objektet skapas
                 break;
         }
 
