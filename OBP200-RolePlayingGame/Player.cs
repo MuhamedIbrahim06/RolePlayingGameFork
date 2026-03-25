@@ -42,7 +42,7 @@ public class Player
         }
     }
 
-    public int GetAttackDamage(int enemyDef)
+    public int ExecuteBaseAttack(int enemyDef) // Bytte namn för att bättre passa ihop med ExecuteSpecialAttack
     {
         int baseDmg = _characterClass.CalculateBaseDamage(Attack, enemyDef);
         return baseDmg + _atkRng.Next(0, 3);
@@ -50,7 +50,7 @@ public class Player
     public int ExecuteSpecialAttack(int enemyDef)
     {
         TakeDamage(_characterClass.SpecialAttackHealthCost);
-        Gold -= _characterClass.SpecialAttackGoldCost;
+        SpendGold(_characterClass.SpecialAttackGoldCost); //Bytte "Gold -=..." med "SpendGold". 
         return _characterClass.CalculateSpecialAttack(Attack, enemyDef);
     }
 
