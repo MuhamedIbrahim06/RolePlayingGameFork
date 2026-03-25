@@ -224,7 +224,7 @@ class Program
 
             if (cmd == "A")
             {
-                int damage = CalculatePlayerDamage(enemyDef);
+                int damage = myPlayer.ExecuteBaseAttack(enemyDef);
                 enemyHp -= damage;
                 Console.WriteLine($"Du slog {enemy[1]} för {damage} skada.");
             }
@@ -311,35 +311,7 @@ class Program
         EnemyTemplates.Add(new[] { "bandit", "Bandit", "16", "6", "1", "8", "6" });
         EnemyTemplates.Add(new[] { "slime", "Geléslem", "14", "3", "0", "5", "3" });
     }
-
-    static int CalculatePlayerDamage(int enemyDef)
-    {
-        int atk = ParseInt(Player[4], 5);
-        string cls = Player[1] ?? "Warrior";
-
-        // Beräkna grundskada
-        int baseDmg = Math.Max(1, atk - (enemyDef / 2));
-        int roll = Rng.Next(0, 3); // liten variation
-
-        switch (cls.Trim())
-        {
-            case "Warrior":
-                baseDmg += 1; // warrior buff
-                break;
-            case "Mage":
-                baseDmg += 2; // mage buff
-                break;
-            case "Rogue":
-                baseDmg += (Rng.NextDouble() < 0.2) ? 4 : 0; // rogue crit-chans
-                break;
-            default:
-                baseDmg += 0;
-                break;
-        }
-
-        return Math.Max(1, baseDmg + roll);
-    }
-
+    
     static int UseClassSpecial(int enemyDef, bool vsBoss)
     {
         string cls = Player[1] ?? "Warrior";
