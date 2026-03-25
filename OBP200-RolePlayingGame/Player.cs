@@ -47,10 +47,10 @@ public class Player
         int baseDmg = _characterClass.CalculateBaseDamage(Attack, enemyDef);
         return baseDmg + _atkRng.Next(0, 3);
     }
-
-    public int GetSpecialAttackDamage(int enemyDef)
+    public int ExecuteSpecialAttack(int enemyDef)
     {
         TakeDamage(_characterClass.SpecialAttackHealthCost);
+        Gold -= _characterClass.SpecialAttackGoldCost;
         return _characterClass.CalculateSpecialAttack(Attack, enemyDef);
     }
 
@@ -65,13 +65,6 @@ public class Player
         {
             Gold -= amount;
         }
-    }
-
-    public int ExecuteSpecialAttack(int enemyDef)
-    {
-        TakeDamage(_characterClass.SpecialAttackHealthCost);
-        Gold -= _characterClass.SpecialAttackGoldCost;
-        return _characterClass.CalculateSpecialAttack(Attack, enemyDef);
     }
 }
 
