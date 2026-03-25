@@ -11,10 +11,13 @@ public class Rogue : BaseCharacterClass
     public override int LevelUpHpBonus => 5;
     public override int LevelUpAtkBonus => 3;
     public override int LevelUpDefBonus => 1;
+    private const double CritChance = 0.2;
+    private const int CritBonusDamage = 4;
+    private const int NoCritBonus = 0;
 
     public override int CalculateBaseDamage(int playerAtk, int enemyDef)
     {
-        int critBonus = _Rng.NextDouble() < 0.2 ? 4 : 0;
+        int critBonus = _Rng.NextDouble() < CritChance ? CritBonusDamage : NoCritBonus;
         return GetBaseDamage(playerAtk, enemyDef) + critBonus;
     }
 
