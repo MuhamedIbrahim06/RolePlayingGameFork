@@ -10,6 +10,8 @@ public class Player
     public int Defense { get; private set; }
     public int Gold { get; private set; }
     public int Potions { get; private set; }
+    protected const int MinDamageVariant = 0;
+    protected const int MaxDamageVariant = 3;
 
     const int NoHealthRemaining = 0;
     private static readonly Random _atkRng = new Random();
@@ -45,7 +47,7 @@ public class Player
     public int ExecuteBaseAttack(int enemyDef) // Bytte namn för att bättre passa ihop med ExecuteSpecialAttack
     {
         int baseDmg = _characterClass.CalculateBaseDamage(Attack, enemyDef);
-        return baseDmg + _atkRng.Next(0, 3);
+        return baseDmg + _atkRng.Next(MinDamageVariant, MaxDamageVariant);
     }
     public int ExecuteSpecialAttack(int enemyDef)
     {
