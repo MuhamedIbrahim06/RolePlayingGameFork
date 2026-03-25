@@ -1,19 +1,18 @@
 ﻿namespace OBP200_RolePlayingGame;
 
-public class Mage : ICharacterClass
+public class Mage : BaseCharacterClass
 {
-    public string ClassName => "Mage";
-    public double FleeChance => 0.35;
-    public int SpecialAttackGoldCost => 3;
-    public int SpecialAttackHealthCost => 0;
+    public override string ClassName => "Mage";
+    public override double FleeChance => 0.35;
+    public override int SpecialAttackGoldCost => 3;
+    public override int SpecialAttackHealthCost => 0;
 
-    public int CalculateBaseDamage(int playerAtk, int enemyDef)
+    public override int CalculateBaseDamage(int playerAtk, int enemyDef)
     {
-        int baseDmg = Math.Max(1, playerAtk - (enemyDef / 2));
-        return baseDmg += 2;
+        return GetBaseDamage(playerAtk, enemyDef) + 2;
     }
 
-    public int CalculateSpecialAttack(int playerAtk, int enemyDef)
+    public override int CalculateSpecialAttack(int playerAtk, int enemyDef)
     {
         return Math.Max(3, playerAtk + 5 - (enemyDef / 2));
     }

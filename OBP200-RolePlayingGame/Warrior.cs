@@ -1,19 +1,18 @@
 ﻿namespace OBP200_RolePlayingGame;
 
-public class Warrior : ICharacterClass
+public class Warrior : BaseCharacterClass
 {
-    public string ClassName => "Warrior";
-    public double FleeChance => 0.25;
-    public int SpecialAttackGoldCost => 0;
-    public int SpecialAttackHealthCost => 2;
+    public override string ClassName => "Warrior";
+    public override double FleeChance => 0.25;
+    public override int SpecialAttackGoldCost => 0;
+    public override int SpecialAttackHealthCost => 2;
 
-    public int CalculateBaseDamage(int playerAtk, int enemyDef)
+    public override int CalculateBaseDamage(int playerAtk, int enemyDef)
     {
-        int baseDmg = Math.Max(1, playerAtk - (enemyDef / 2));
-        return baseDmg + 1;
+        return GetBaseDamage(playerAtk, enemyDef) + 1;
     }
 
-    public int CalculateSpecialAttack(int playerAtk, int enemyDef)
+    public override int CalculateSpecialAttack(int playerAtk, int enemyDef)
     { 
         return Math.Max(2, playerAtk + 3 - enemyDef);
     }

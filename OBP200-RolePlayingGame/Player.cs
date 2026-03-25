@@ -66,5 +66,12 @@ public class Player
             Gold -= amount;
         }
     }
+
+    public int ExecuteSpecialAttack(int enemyDef)
+    {
+        TakeDamage(_characterClass.SpecialAttackHealthCost);
+        Gold -= _characterClass.SpecialAttackGoldCost;
+        return _characterClass.CalculateSpecialAttack(Attack, enemyDef);
+    }
 }
 
