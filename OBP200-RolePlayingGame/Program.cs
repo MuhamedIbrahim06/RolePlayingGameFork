@@ -230,9 +230,22 @@ class Program
             }
             else if (cmd == "X")
             {
-                int special = UseClassSpecial(enemyDef, isBoss);
-                enemyHp -= special;
-                Console.WriteLine($"Special! {enemy[1]} tar {special} skada.");
+                if (myPlayer.CanAffordSpecialAttack())
+                {
+                    int special = myPlayer.ExecuteSpecialAttack(enemyDef);
+                    if (isBoss)
+                    {
+                        special = (int)Math.Round(special * 0.8); //Förde upp Boss multiplikationen hit
+                    }
+
+
+                    enemyHp -= special;
+                    Console.WriteLine($"{myPlayer.Name} använder sin Special! {enemy[1]} tar {special} skada.");
+                }
+                else
+                {
+                    Console.WriteLine("Du har inte tillräckligt med guld för Special!");
+                }
             }
             else if (cmd == "P")
             {
@@ -312,66 +325,6 @@ class Program
         EnemyTemplates.Add(new[] { "slime", "Geléslem", "14", "3", "0", "5", "3" });
     }
     
-    static int UseClassSpecial(int enemyDef, bool vsBoss)
-    {
-        string cls = Player[1] ?? "Warrior";
-        int specialDmg = 0;
-
-        // Hantering av specialförmågor
-        if (cls == "Warrior")
-        {
-            // Heavy Strike: hög skada men självskada
-            Console.WriteLine("Warrior använder Heavy Strike!");
-            int atk = ParseInt(Player[4], 5);
-            specialDmg = Math.Max(2, atk + 3 - enemyDef);
-            ApplyDamageToPlayer(2); // självskada
-        }
-        else if (cls == "Mage")
-        {
-            // Fireball: stor skada, kostar guld
-            int gold = ParseInt(Player[6], 0);
-            if (gold >= 3)
-            {
-                Console.WriteLine("Mage kastar Fireball!");
-                Player[6] = (gold - 3).ToString();
-                int atk = ParseInt(Player[4], 5);
-                specialDmg = Math.Max(3, atk + 5 - (enemyDef / 2));
-            }
-            else
-            {
-                Console.WriteLine("Inte tillräckligt med guld för att kasta Fireball (kostar 3).");
-                specialDmg = 0;
-            }
-        }
-        else if (cls == "Rogue")
-        {
-            // Backstab: chans att ignorera försvar, hög risk/hög belöning
-            if (Rng.NextDouble() < 0.5)
-            {
-                Console.WriteLine("Rogue utför en lyckad Backstab!");
-                int atk = ParseInt(Player[4], 5);
-                specialDmg = Math.Max(4, atk + 6);
-            }
-            else
-            {
-                Console.WriteLine("Backstab misslyckades!");
-                specialDmg = 1;
-            }
-        }
-        else
-        {
-            specialDmg = 0;
-        }
-
-        // Dämpa skada mot bossen
-        if (vsBoss)
-        {
-            specialDmg = (int)Math.Round(specialDmg * 0.8);
-        }
-
-        return Math.Max(0, specialDmg);
-    }
-
     static int CalculateEnemyDamage(int enemyAtk)
     {
         int def = ParseInt(Player[5], 0);
