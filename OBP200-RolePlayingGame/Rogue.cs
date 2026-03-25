@@ -7,6 +7,7 @@ public class Rogue : BaseCharacterClass
     public override int SpecialAttackGoldCost => 0;
     public override int SpecialAttackHealthCost => 0;
     private static readonly Random _Rng = new Random();
+    private const double ChanceToHitSpecial = 0.5;
 
     public override int CalculateBaseDamage(int playerAtk, int enemyDef)
     {
@@ -16,6 +17,13 @@ public class Rogue : BaseCharacterClass
 
     public override int CalculateSpecialAttack(int playerAtk, int enemyDef)
     {
-        
+        if(_Rng.NextDouble() < ChanceToHitSpecial)
+        {
+            return Math.Max(4, playerAtk + 6);
+        }
+        else
+        {
+            return 1;
+        }
     }
 }
