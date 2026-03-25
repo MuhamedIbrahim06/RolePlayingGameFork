@@ -11,6 +11,7 @@ class Program
     // index: 0 Name, 1 Class, 2 HP, 3 MaxHP, 4 ATK, 5 DEF, 6 GOLD, 7 XP, 8 LEVEL, 9 POTIONS, 10 INVENTORY (semicolon-sep)
     static string[] Player = new string[11];
 
+    private static Player myPlayer;
     // Rum: [type, label]
     // types: battle, treasure, shop, rest, boss
     static List<string[]> Rooms = new List<string[]>();
@@ -81,21 +82,25 @@ class Program
         
         switch (k)
         {
-            case "1": // Warrior: tankig
+            case "1": 
                 cls = "Warrior";
                 maxhp = 40; hp = 40; atk = 7; def = 5; potions = 2; gold = 15;
+                myPlayer = new Player(new Warrior(), name, hp, maxhp, atk, def, gold, potions); 
                 break;
-            case "2": // Mage: hög damage, låg def
+            case "2": 
                 cls = "Mage";
                 maxhp = 28; hp = 28; atk = 10; def = 2; potions = 2; gold = 15;
+                myPlayer = new Player(new Mage(), name, hp, maxhp, atk, def, gold, potions); 
                 break;
-            case "3": // Rogue: krit-chans
+            case "3": 
                 cls = "Rogue";
                 maxhp = 32; hp = 32; atk = 8; def = 3; potions = 3; gold = 20;
+                myPlayer = new Player(new Rogue(), name, hp, maxhp, atk, def, gold, potions); 
                 break;
             default:
                 cls = "Warrior";
                 maxhp = 40; hp = 40; atk = 7; def = 5; potions = 2; gold = 15;
+                myPlayer = new Player(new Warrior(), name, hp, maxhp, atk, def, gold, potions); 
                 break;
         }
 
@@ -219,15 +224,28 @@ class Program
 
             if (cmd == "A")
             {
-                int damage = CalculatePlayerDamage(enemyDef);
+                int damage = myPlayer.ExecuteBaseAttack(enemyDef);
                 enemyHp -= damage;
                 Console.WriteLine($"Du slog {enemy[1]} för {damage} skada.");
             }
             else if (cmd == "X")
             {
-                int special = UseClassSpecial(enemyDef, isBoss);
-                enemyHp -= special;
-                Console.WriteLine($"Special! {enemy[1]} tar {special} skada.");
+                if (myPlayer.CanAffordSpecialAttack())
+                {
+                    int special = myPlayer.ExecuteSpecialAttack(enemyDef);
+                    if (isBoss)
+                    {
+                        special = (int)Math.Round(special * 0.8);
+                    }
+
+
+                    enemyHp -= special;
+                    Console.WriteLine($"{myPlayer.Name} använder sin Special! {enemy[1]} tar {special} skada.");
+                }
+                else
+                {
+                    Console.WriteLine("Du har inte tillräckligt med guld för Special!");
+                }
             }
             else if (cmd == "P")
             {
@@ -306,95 +324,7 @@ class Program
         EnemyTemplates.Add(new[] { "bandit", "Bandit", "16", "6", "1", "8", "6" });
         EnemyTemplates.Add(new[] { "slime", "Geléslem", "14", "3", "0", "5", "3" });
     }
-
-    static int CalculatePlayerDamage(int enemyDef)
-    {
-        int atk = ParseInt(Player[4], 5);
-        string cls = Player[1] ?? "Warrior";
-
-        // Beräkna grundskada
-        int baseDmg = Math.Max(1, atk - (enemyDef / 2));
-        int roll = Rng.Next(0, 3); // liten variation
-
-        switch (cls.Trim())
-        {
-            case "Warrior":
-                baseDmg += 1; // warrior buff
-                break;
-            case "Mage":
-                baseDmg += 2; // mage buff
-                break;
-            case "Rogue":
-                baseDmg += (Rng.NextDouble() < 0.2) ? 4 : 0; // rogue crit-chans
-                break;
-            default:
-                baseDmg += 0;
-                break;
-        }
-
-        return Math.Max(1, baseDmg + roll);
-    }
-
-    static int UseClassSpecial(int enemyDef, bool vsBoss)
-    {
-        string cls = Player[1] ?? "Warrior";
-        int specialDmg = 0;
-
-        // Hantering av specialförmågor
-        if (cls == "Warrior")
-        {
-            // Heavy Strike: hög skada men självskada
-            Console.WriteLine("Warrior använder Heavy Strike!");
-            int atk = ParseInt(Player[4], 5);
-            specialDmg = Math.Max(2, atk + 3 - enemyDef);
-            ApplyDamageToPlayer(2); // självskada
-        }
-        else if (cls == "Mage")
-        {
-            // Fireball: stor skada, kostar guld
-            int gold = ParseInt(Player[6], 0);
-            if (gold >= 3)
-            {
-                Console.WriteLine("Mage kastar Fireball!");
-                Player[6] = (gold - 3).ToString();
-                int atk = ParseInt(Player[4], 5);
-                specialDmg = Math.Max(3, atk + 5 - (enemyDef / 2));
-            }
-            else
-            {
-                Console.WriteLine("Inte tillräckligt med guld för att kasta Fireball (kostar 3).");
-                specialDmg = 0;
-            }
-        }
-        else if (cls == "Rogue")
-        {
-            // Backstab: chans att ignorera försvar, hög risk/hög belöning
-            if (Rng.NextDouble() < 0.5)
-            {
-                Console.WriteLine("Rogue utför en lyckad Backstab!");
-                int atk = ParseInt(Player[4], 5);
-                specialDmg = Math.Max(4, atk + 6);
-            }
-            else
-            {
-                Console.WriteLine("Backstab misslyckades!");
-                specialDmg = 1;
-            }
-        }
-        else
-        {
-            specialDmg = 0;
-        }
-
-        // Dämpa skada mot bossen
-        if (vsBoss)
-        {
-            specialDmg = (int)Math.Round(specialDmg * 0.8);
-        }
-
-        return Math.Max(0, specialDmg);
-    }
-
+    
     static int CalculateEnemyDamage(int enemyAtk)
     {
         int def = ParseInt(Player[5], 0);
@@ -437,12 +367,7 @@ class Program
 
     static bool TryRunAway()
     {
-        // Flyktschans baserad på karaktärsklass
-        string cls = Player[1] ?? "Warrior";
-        double chance = 0.25;
-        if (cls == "Rogue") chance = 0.5;
-        if (cls == "Mage") chance = 0.35;
-        return Rng.NextDouble() < chance;
+        return Rng.NextDouble() < myPlayer._characterClass.FleeChance;
     }
 
     static bool IsPlayerDead()
@@ -473,34 +398,7 @@ class Program
         if (xp >= nextThreshold)
         {
             Player[8] = (lvl + 1).ToString();
-
-            // Uppgradering baserad på karaktärsklass
-            string cls = Player[1] ?? "Warrior";
-            int maxhp = ParseInt(Player[3], 1);
-            int atk = ParseInt(Player[4], 1);
-            int def = ParseInt(Player[5], 0);
-
-            switch (cls)
-            {
-                case "Warrior":
-                    maxhp += 6; atk += 2; def += 2;
-                    break;
-                case "Mage":
-                    maxhp += 4; atk += 4; def += 1;
-                    break;
-                case "Rogue":
-                    maxhp += 5; atk += 3; def += 1;
-                    break;
-                default:
-                    maxhp += 4; atk += 3; def += 1;
-                    break;
-            }
-
-            Player[3] = maxhp.ToString();
-            Player[4] = atk.ToString();
-            Player[5] = def.ToString();
-            Player[2] = maxhp.ToString(); // full heal vid level up
-
+            myPlayer.ApplyLevelUp();
             Console.WriteLine($"Du når nivå {lvl + 1}! Värden ökade och HP återställd.");
         }
     }
