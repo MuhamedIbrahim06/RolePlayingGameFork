@@ -398,34 +398,8 @@ class Program
         if (xp >= nextThreshold)
         {
             Player[8] = (lvl + 1).ToString();
-
-            // Uppgradering baserad på karaktärsklass
-            string cls = Player[1] ?? "Warrior";
-            int maxhp = ParseInt(Player[3], 1);
-            int atk = ParseInt(Player[4], 1);
-            int def = ParseInt(Player[5], 0);
-
-            switch (cls)
-            {
-                case "Warrior":
-                    maxhp += 6; atk += 2; def += 2;
-                    break;
-                case "Mage":
-                    maxhp += 4; atk += 4; def += 1;
-                    break;
-                case "Rogue":
-                    maxhp += 5; atk += 3; def += 1;
-                    break;
-                default:
-                    maxhp += 4; atk += 3; def += 1;
-                    break;
-            }
-
-            Player[3] = maxhp.ToString();
-            Player[4] = atk.ToString();
-            Player[5] = def.ToString();
-            Player[2] = maxhp.ToString(); // full heal vid level up
-
+            myPlayer.ApplyLevelUp();
+            // Kommentar: Eftersom alla stats i klasserna nu har private set kan inte metoder här ändra de, så jag tog bort switch caset.
             Console.WriteLine($"Du når nivå {lvl + 1}! Värden ökade och HP återställd.");
         }
     }

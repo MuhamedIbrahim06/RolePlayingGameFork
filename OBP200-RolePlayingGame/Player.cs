@@ -66,5 +66,12 @@ public class Player
             Gold -= amount;
         }
     }
+    public void ApplyLevelUp() // Ny metod för att ändra stats via Level up, samt för att  bidra till SRP (Single-Responsibility Principle)
+    {
+        MaxHealthPoints += _characterClass.LevelUpHpBonus;
+        Attack += _characterClass.LevelUpAtkBonus;
+        Defense += _characterClass.LevelUpDefBonus;
+        HealthPoints += MaxHealthPoints; // Tänker att jag flyttar Full Heal vid Lvl upp från originalkoden till hit
+    }
 }
 

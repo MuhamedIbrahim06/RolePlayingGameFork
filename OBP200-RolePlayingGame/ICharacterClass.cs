@@ -8,4 +8,7 @@ public interface ICharacterClass
     int SpecialAttackGoldCost { get; }
     int SpecialAttackHealthCost { get; }
     double FleeChance { get; }
+    int LevelUpHpBonus { get; }
+    int LevelUpAtkBonus { get; }
+    int LevelUpDefBonus { get; }
 }

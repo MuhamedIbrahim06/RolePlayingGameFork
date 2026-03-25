@@ -8,6 +8,9 @@ public abstract class BaseCharacterClass : ICharacterClass
     public abstract int SpecialAttackHealthCost { get; }
     public abstract int CalculateBaseDamage(int playerAtk, int enemyDef);
     public abstract int CalculateSpecialAttack(int playerAtk, int enemyDef);
+    public abstract int LevelUpHpBonus { get; }
+    public abstract int LevelUpAtkBonus { get; }
+    public abstract int LevelUpDefBonus { get; }
 
     protected int GetBaseDamage(int playerAtk, int enemyDef)
     {

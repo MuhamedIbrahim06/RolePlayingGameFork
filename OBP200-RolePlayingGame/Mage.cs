@@ -6,6 +6,9 @@ public class Mage : BaseCharacterClass
     public override double FleeChance => 0.35;
     public override int SpecialAttackGoldCost => 3;
     public override int SpecialAttackHealthCost => 0;
+    public override int LevelUpHpBonus => 4;
+    public override int LevelUpAtkBonus => 4;
+    public override int LevelUpDefBonus => 1;
 
     public override int CalculateBaseDamage(int playerAtk, int enemyDef)
     {

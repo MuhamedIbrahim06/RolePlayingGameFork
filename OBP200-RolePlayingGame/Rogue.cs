@@ -8,6 +8,9 @@ public class Rogue : BaseCharacterClass
     public override int SpecialAttackHealthCost => 0;
     private static readonly Random _Rng = new Random();
     private const double ChanceToHitSpecial = 0.5;
+    public override int LevelUpHpBonus => 5;
+    public override int LevelUpAtkBonus => 3;
+    public override int LevelUpDefBonus => 1;
 
     public override int CalculateBaseDamage(int playerAtk, int enemyDef)
     {

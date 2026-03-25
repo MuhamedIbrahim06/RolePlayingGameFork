@@ -6,6 +6,9 @@ public class Warrior : BaseCharacterClass
     public override double FleeChance => 0.25;
     public override int SpecialAttackGoldCost => 0;
     public override int SpecialAttackHealthCost => 2;
+    public override int LevelUpHpBonus => 6;
+    public override int LevelUpAtkBonus => 2;
+    public override int LevelUpDefBonus => 2;
 
     public override int CalculateBaseDamage(int playerAtk, int enemyDef)
     {
