@@ -12,6 +12,7 @@ public class Player
     public int Potions { get; private set; }
     protected const int MinDamageVariant = 0;
     protected const int MaxDamageVariant = 3;
+    protected const int ZeroDamage = 0;
 
     const int NoHealthRemaining = 0;
     private static readonly Random _atkRng = new Random();
@@ -31,20 +32,20 @@ public class Player
     public void TakeDamage(int amount)
     {
         int actualDamage = amount - Defense;
-        if (actualDamage < 0)
+        if (actualDamage < ZeroDamage)
         {
-            actualDamage = 0; //Här väljer jag att göra en kontroll så att damage inte blir negativ
+            actualDamage = ZeroDamage; 
         }
 
         HealthPoints -= actualDamage;
         
         if (HealthPoints < NoHealthRemaining)
         {
-            HealthPoints = NoHealthRemaining; //Här gör jag en kontroll så att en players liv inte blir negativ
+            HealthPoints = NoHealthRemaining; 
         }
     }
 
-    public int ExecuteBaseAttack(int enemyDef) // Bytte namn för att bättre passa ihop med ExecuteSpecialAttack
+    public int ExecuteBaseAttack(int enemyDef) 
     {
         int baseDmg = _characterClass.CalculateBaseDamage(Attack, enemyDef);
         return baseDmg + _atkRng.Next(MinDamageVariant, MaxDamageVariant);
@@ -52,7 +53,7 @@ public class Player
     public int ExecuteSpecialAttack(int enemyDef)
     {
         TakeDamage(_characterClass.SpecialAttackHealthCost);
-        SpendGold(_characterClass.SpecialAttackGoldCost); //Bytte "Gold -=..." med "SpendGold". 
+        SpendGold(_characterClass.SpecialAttackGoldCost); 
         return _characterClass.CalculateSpecialAttack(Attack, enemyDef);
     }
 

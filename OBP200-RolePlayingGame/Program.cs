@@ -233,6 +233,7 @@ class Program
                 if (myPlayer.CanAffordSpecialAttack())
                 {
                     int special = myPlayer.ExecuteSpecialAttack(enemyDef);
+                    Player[6] = myPlayer.Gold.ToString();
                     if (isBoss)
                     {
                         special = (int)Math.Round(special * 0.8);
