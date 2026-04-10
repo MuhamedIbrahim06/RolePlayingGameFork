@@ -4,8 +4,6 @@ public class Rogue : BaseCharacterClass
 {
     public override string ClassName => "Rogue";
     public override double FleeChance => 0.5;
-    public override int SpecialAttackGoldCost => 0;
-    public override int SpecialAttackHealthCost => 0;
     private static readonly Random _Rng = new Random();
     private const double ChanceToHitSpecial = 0.5;
     public override int LevelUpHpBonus => 5;
@@ -21,14 +19,18 @@ public class Rogue : BaseCharacterClass
         return GetBaseDamage(playerAtk, enemyDef) + critBonus;
     }
 
-    public override int CalculateSpecialAttack(int playerAtk, int enemyDef)
+    public override int PerformSpecialAttack(Player player, int enemyDef, bool vsBoss)
     {
         if(_Rng.NextDouble() < ChanceToHitSpecial)
         {
-            return Math.Max(4, playerAtk + 6);
+            Console.WriteLine($"{player.Name} utför en lyckad Backstab!");
+            int damage = Math.Max(4, player.Attack + 6);
+            if (vsBoss) damage = (int)Math.Round(damage * 0.8);
+            return damage;
         }
         else
         {
+            Console.WriteLine("Backstab misslyckades!");
             return 1;
         }
     }
