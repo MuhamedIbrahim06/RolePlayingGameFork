@@ -4,10 +4,8 @@ public abstract class BaseCharacterClass : ICharacterClass
 {
     public abstract string ClassName { get; }
     public abstract double FleeChance { get; }
-    public abstract int SpecialAttackGoldCost { get; }
-    public abstract int SpecialAttackHealthCost { get; }
     public abstract int CalculateBaseDamage(int playerAtk, int enemyDef);
-    public abstract int CalculateSpecialAttack(int playerAtk, int enemyDef);
+    public abstract int PerformSpecialAttack(int playerAtk, int enemyDef, bool vsBoss);
     public abstract int LevelUpHpBonus { get; }
     public abstract int LevelUpAtkBonus { get; }
     public abstract int LevelUpDefBonus { get; }
