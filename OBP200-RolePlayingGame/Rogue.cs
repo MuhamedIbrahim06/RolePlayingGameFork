@@ -23,7 +23,7 @@ public class Rogue : BaseCharacterClass
     {
         if(_Rng.NextDouble() < ChanceToHitSpecial)
         {
-            Console.WriteLine($"{player.Name} utför en lyckad Backstab!");
+            Console.WriteLine($"Rogue utför en lyckad Backstab!");
             int damage = Math.Max(4, player.Attack + 6);
             if (vsBoss) damage = (int)Math.Round(damage * 0.8);
             return damage;
