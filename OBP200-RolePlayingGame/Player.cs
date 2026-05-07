@@ -10,6 +10,7 @@ public class Player
     public int Defense { get; private set; }
     public int Gold { get; private set; }
     public int Potions { get; private set; }
+    public double FleeChance => _characterClass.FleeChance;
     protected const int MinDamageVariant = 0;
     protected const int MaxDamageVariant = 3;
     protected const int ZeroDamage = 0;

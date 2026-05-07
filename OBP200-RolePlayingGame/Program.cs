@@ -355,7 +355,7 @@ class Program
 
     static bool TryRunAway()
     {
-        return Rng.NextDouble() < myPlayer._characterClass.FleeChance;
+        return Rng.NextDouble() < myPlayer.FleeChance;
     }
 
     static bool IsPlayerDead()
