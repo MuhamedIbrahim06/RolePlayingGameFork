@@ -230,23 +230,10 @@ class Program
             }
             else if (cmd == "X")
             {
-                if (myPlayer.CanAffordSpecialAttack())
-                {
-                    int special = myPlayer.ExecuteSpecialAttack(enemyDef);
-                    Player[6] = myPlayer.Gold.ToString();
-                    if (isBoss)
-                    {
-                        special = (int)Math.Round(special * 0.8);
-                    }
-
-
-                    enemyHp -= special;
-                    Console.WriteLine($"{myPlayer.Name} använder sin Special! {enemy[1]} tar {special} skada.");
-                }
-                else
-                {
-                    Console.WriteLine("Du har inte tillräckligt med guld för Special!");
-                }
+                int special = myPlayer.ExecuteSpecialAttack(enemyDef, isBoss);
+                Player[6] = myPlayer.Gold.ToString();
+                enemyHp -= special;
+                Console.WriteLine($"Special! {enemy[1]} tar {special} skada.");
             }
             else if (cmd == "P")
             {
