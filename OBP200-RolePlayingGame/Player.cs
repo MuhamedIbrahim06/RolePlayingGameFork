@@ -68,5 +68,14 @@ public class Player
         Defense += _characterClass.LevelUpDefBonus;
         HealthPoints = MaxHealthPoints; 
     }
+
+    public void ApplyInternalDamage(int amount)
+    {
+        HealthPoints = Math.Max(NoHealthRemaining, HealthPoints - amount);
+    }
 }
+
+
+
+
 
