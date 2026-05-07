@@ -232,7 +232,9 @@ class Program
             {
                 int special = myPlayer.ExecuteSpecialAttack(enemyDef, isBoss);
                 Player[6] = myPlayer.Gold.ToString();
-                enemyHp -= special;
+                Player[2] = myPlayer.HealthPoints.ToString();
+
+            enemyHp -= special;
                 Console.WriteLine($"Special! {enemy[1]} tar {special} skada.");
             }
             else if (cmd == "P")
