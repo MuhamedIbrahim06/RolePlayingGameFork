@@ -204,6 +204,7 @@ class Program
 
     static bool DoBattle(bool isBoss)
     {
+        myPlayer.SyncStats(Player[4], Player[5], Player[6], Player[9], Player[2], Player[3]);
         var enemy = GenerateEnemy(isBoss);
         Console.WriteLine($"En {enemy[1]} dyker upp! (HP {enemy[2]}, ATK {enemy[3]}, DEF {enemy[4]})");
 

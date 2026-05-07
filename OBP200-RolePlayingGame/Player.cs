@@ -74,6 +74,16 @@ public class Player
     {
         HealthPoints = Math.Max(NoHealthRemaining, HealthPoints - amount);
     }
+
+    public void SyncStats(string atk, string def, string gold, string potions, string hp, string maxHp)
+    {
+        Attack = int.Parse(atk);
+        Defense = int.Parse(def);
+        Gold = int.Parse(gold);
+        Potions = int.Parse(potions);
+        HealthPoints = int.Parse(hp);
+        MaxHealthPoints = int.Parse(hp);
+    }
 }
 
 
