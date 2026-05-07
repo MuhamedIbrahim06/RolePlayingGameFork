@@ -390,6 +390,10 @@ class Program
         {
             Player[8] = (lvl + 1).ToString();
             myPlayer.ApplyLevelUp();
+            Player[2] = myPlayer.HealthPoints.ToString();
+            Player[3] = myPlayer.MaxHealthPoints.ToString();
+            Player[4] = myPlayer.Attack.ToString();
+            Player[5] = myPlayer.Defense.ToString();
             Console.WriteLine($"Du når nivå {lvl + 1}! Värden ökade och HP återställd.");
         }
     }
