@@ -204,6 +204,7 @@ class Program
 
     static bool DoBattle(bool isBoss)
     {
+        myPlayer.SyncStats(Player[4], Player[5], Player[6], Player[9], Player[2], Player[3]);
         var enemy = GenerateEnemy(isBoss);
         Console.WriteLine($"En {enemy[1]} dyker upp! (HP {enemy[2]}, ATK {enemy[3]}, DEF {enemy[4]})");
 
@@ -230,23 +231,12 @@ class Program
             }
             else if (cmd == "X")
             {
-                if (myPlayer.CanAffordSpecialAttack())
-                {
-                    int special = myPlayer.ExecuteSpecialAttack(enemyDef);
-                    Player[6] = myPlayer.Gold.ToString();
-                    if (isBoss)
-                    {
-                        special = (int)Math.Round(special * 0.8);
-                    }
+                int special = myPlayer.ExecuteSpecialAttack(enemyDef, isBoss);
+                Player[6] = myPlayer.Gold.ToString();
+                Player[2] = myPlayer.HealthPoints.ToString();
 
-
-                    enemyHp -= special;
-                    Console.WriteLine($"{myPlayer.Name} använder sin Special! {enemy[1]} tar {special} skada.");
-                }
-                else
-                {
-                    Console.WriteLine("Du har inte tillräckligt med guld för Special!");
-                }
+            enemyHp -= special;
+                Console.WriteLine($"Special! {enemy[1]} tar {special} skada.");
             }
             else if (cmd == "P")
             {
@@ -368,7 +358,7 @@ class Program
 
     static bool TryRunAway()
     {
-        return Rng.NextDouble() < myPlayer._characterClass.FleeChance;
+        return Rng.NextDouble() < myPlayer.FleeChance;
     }
 
     static bool IsPlayerDead()
@@ -400,6 +390,10 @@ class Program
         {
             Player[8] = (lvl + 1).ToString();
             myPlayer.ApplyLevelUp();
+            Player[2] = myPlayer.HealthPoints.ToString();
+            Player[3] = myPlayer.MaxHealthPoints.ToString();
+            Player[4] = myPlayer.Attack.ToString();
+            Player[5] = myPlayer.Defense.ToString();
             Console.WriteLine($"Du når nivå {lvl + 1}! Värden ökade och HP återställd.");
         }
     }

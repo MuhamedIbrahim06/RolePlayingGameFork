@@ -4,9 +4,7 @@ public interface ICharacterClass
 {
     string ClassName { get; }
     int CalculateBaseDamage(int playerAtk, int enemyDef);
-    int CalculateSpecialAttack(int playerAtk, int enemyDef);
-    int SpecialAttackGoldCost { get; }
-    int SpecialAttackHealthCost { get; }
+    int PerformSpecialAttack(Player player, int enemyDef, bool vsBoss);
     double FleeChance { get; }
     int LevelUpHpBonus { get; }
     int LevelUpAtkBonus { get; }
