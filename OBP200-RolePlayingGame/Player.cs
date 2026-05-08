@@ -82,7 +82,7 @@ public class Player
         Gold = int.Parse(gold);
         Potions = int.Parse(potions);
         HealthPoints = int.Parse(hp);
-        MaxHealthPoints = int.Parse(hp);
+        MaxHealthPoints = int.Parse(maxHp);
     }
 }
 
